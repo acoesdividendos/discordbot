@@ -5,6 +5,7 @@ var apiCalls = require("./helpers/apiCalls");
 const prefix = "!";
 
 const fs = require("fs");
+var config = require("./config.json");
 
 client.commands = new Discord.Collection();
 
@@ -73,4 +74,4 @@ client.on("message", (message) => {
   }
 });
 
-client.login("-");
+client.login(config.DISCORD_API_KEY);

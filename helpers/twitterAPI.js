@@ -3,6 +3,7 @@ const cron = require("node-cron");
 const fs = require("fs");
 const Discord = require("discord.js");
 const client = new Discord.Client();
+var config = require("../config.json");
 
 // this is the ID for @TwitterDev
 const userId = "1368593986106109957";
@@ -11,8 +12,7 @@ const url = `https://api.twitter.com/2/users/${userId}/tweets`;
 // The code below sets the bearer token from your environment variables
 // To set environment variables on macOS or Linux, run the export command below from the terminal:
 // export BEARER_TOKEN='YOUR-TOKEN'
-const bearerToken =
-  "AAAAAAAAAAAAAAAAAAAAAJ7GNQEAAAAAaYFcxRzQPBy5Sk6eH0dDJRjVXFc%3DYvZDADwTeBsHIFEeqSqMW5J6ZBdbO882Zj1eQLACGoAishgWu6";
+const bearerToken = config.TWITTER_API_KEY;
 //const bearerToken = process.env.BEARER_TOKEN;
 
 const getUserTweets = async () => {
@@ -87,7 +87,7 @@ cron.schedule("* * * * *", function () {
       lastIdFromFile = buf.toString();
       if (!lastIdFromFile.includes(newId)) {
         const channel = client.channels.cache.find(
-          (channel) => channel.name === "market-updates"
+          (channel) => channel.id === "818257853168877578"
         );
         channel.send("https://twitter.com/gdInvestidores/status/" + newId);
         lastIdFromFile = lastIdFromFile.replace("[", "").replace("]", "");
@@ -103,8 +103,8 @@ cron.schedule("* * * * *", function () {
     });
   });
 });
-
-client.login("-");
+console.log(config.DISCORD_API_KEY);
+client.login(config.DISCORD_API_KEY);
 
 /*fs.readFile("lastID.txt", function (err, buf) {
   lastIdFromFile = buf.toString();
