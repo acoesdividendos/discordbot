@@ -90,7 +90,12 @@ cron.schedule("* * * * *", function () {
           (channel) => channel.name === "market-updates"
         );
         channel.send("https://twitter.com/gdInvestidores/status/" + newId);
-        fs.writeFile("lastID.txt", lastIdFromFile.push(newId), (err) => {
+        lastIdFromFile = lastIdFromFile.replace("[", "").replace("]", "");
+        lastIdFromFile.split(",");
+        var newArrayIds = [];
+        newArrayIds.push(lastIdFromFile);
+        newArrayIds.push(newId);
+        fs.writeFile("lastID.txt", newArrayIds.toString(), (err) => {
           if (err) console.log(err);
           console.log("Successfully Written to File.");
         });
@@ -99,7 +104,7 @@ cron.schedule("* * * * *", function () {
   });
 });
 
-client.login("ODA0NDcyMzA3NjY0OTQ1MTYy.YBM1OA.OvgkTYYdayG3pn-JarsygSe2YqA");
+client.login("-");
 
 /*fs.readFile("lastID.txt", function (err, buf) {
   lastIdFromFile = buf.toString();
@@ -109,4 +114,21 @@ client.login("ODA0NDcyMzA3NjY0OTQ1MTYy.YBM1OA.OvgkTYYdayG3pn-JarsygSe2YqA");
 /*fs.writeFile("lastID.txt", newId, (err) => {
   if (err) console.log(err);
   console.log("Successfully Written to File.");
+});
+
+var lastIdFromFile = "['1368885438191181826','1368885438191181826']";
+lastIdFromFile = lastIdFromFile.replace("[", "").replace("]", "");
+lastIdFromFile.split(",");
+var newId = "test";
+var newArrayIds = [];
+newArrayIds.push(lastIdFromFile);
+newArrayIds.push(newId);
+fs.writeFile("lastID.txt", newArrayIds.toString(), (err) => {
+  if (err) console.log(err);
+  console.log("Successfully Written to File.");
+});
+
+fs.readFile("lastID.txt", function (err, buf) {
+  lastIdFromFile = buf.toString();
+  console.log(lastIdFromFile.includes("test"));
 });*/

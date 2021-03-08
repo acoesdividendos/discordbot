@@ -11,7 +11,10 @@
   "dependencies": {
     "cheerio": "^1.0.0-rc.5",
     "discord.js": "^12.5.1",
+    "fs": "0.0.1-security",
     "got": "^11.8.1",
+    "needle": "^2.6.0",
+    "node-cron": "^2.0.3",
     "request": "^2.88.2"
   }
 }
