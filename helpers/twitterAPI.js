@@ -99,7 +99,7 @@ cron.schedule("* * * * *", function () {
   });
 });
 
-client.login("ODA0NDcyMzA3NjY0OTQ1MTYy.YBM1OA.fUb8JTpwWodWJZWU1zSugqOOKJ4");
+client.login("ODA0NDcyMzA3NjY0OTQ1MTYy.YBM1OA.OvgkTYYdayG3pn-JarsygSe2YqA");
 
 /*fs.readFile("lastID.txt", function (err, buf) {
   lastIdFromFile = buf.toString();
