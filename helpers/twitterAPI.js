@@ -4,6 +4,7 @@ const fs = require("fs");
 const Discord = require("discord.js");
 const client = new Discord.Client();
 var config = require("../config.json");
+var coin360 = require("./coin360");
 
 // this is the ID for @TwitterDev
 const userId = "1368593986106109957";
@@ -80,7 +81,7 @@ const getPage = async (params, options, nextToken) => {
   }
 };
 
-cron.schedule("* * * * *", function () {
+/*cron.schedule("* * * * *", function () {
   getUserTweets().then((newId) => {
     var lastIdFromFile = "";
     fs.readFile("lastID.txt", function (err, buf) {
@@ -102,8 +103,12 @@ cron.schedule("* * * * *", function () {
       }
     });
   });
+});*/
+
+cron.schedule("0 21 * * *", function () {
+  coin360.getImageAndMakeTweet();
 });
-console.log(config.DISCORD_API_KEY);
+
 client.login(config.DISCORD_API_KEY);
 
 /*fs.readFile("lastID.txt", function (err, buf) {
