@@ -81,7 +81,7 @@ exports.getImageAndMakeTweet = function () {
                         lastIdFromFile = buf.toString();
                         if (!lastIdFromFile.includes(newId)) {
                           const channel = client.channels.cache.find(
-                            (channel) => channel.id === "721466712628789371"
+                            (channel) => channel.id === "818257853168877578"
                           );
                           channel.send(
                             "https://twitter.com/gdInvestidores/status/" + newId

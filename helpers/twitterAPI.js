@@ -81,7 +81,7 @@ const getPage = async (params, options, nextToken) => {
   }
 };
 
-/*cron.schedule("* * * * *", function () {
+cron.schedule("* * * * *", function () {
   getUserTweets().then((newId) => {
     var lastIdFromFile = "";
     fs.readFile("lastID.txt", function (err, buf) {
@@ -103,7 +103,7 @@ const getPage = async (params, options, nextToken) => {
       }
     });
   });
-});*/
+});
 
 cron.schedule("0 21 * * *", function () {
   coin360.getImageAndMakeTweet();
