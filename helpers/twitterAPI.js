@@ -105,7 +105,7 @@ cron.schedule("* * * * *", function () {
   });
 });
 
-cron.schedule("0 21 * * *", function () {
+cron.schedule("0 22 * * *", function () {
   coin360.getImageAndMakeTweet();
 });
 
