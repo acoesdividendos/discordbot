@@ -87,6 +87,9 @@ cron.schedule("* * * * *", function () {
     database.checkIfTweetIdExist(newId).then((result) => {
       if (!result) {
         database.addTweetID(newId).then(() => {
+          const channel = client.channels.cache.find(
+            (channel) => channel.id === "818257853168877578"
+          );
           channel.send("https://twitter.com/gdInvestidores/status/" + newId);
         });
       }
