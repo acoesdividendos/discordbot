@@ -39,27 +39,25 @@ const getUserTweets = async () => {
   let userName;
   console.log("Retrieving Tweets...");
 
-  while (hasNextPage) {
-    let resp = await getPage(params, options, nextToken);
-    if (
-      resp &&
-      resp.meta &&
-      resp.meta.result_count &&
-      resp.meta.result_count > 0
-    ) {
-      lastId = resp.meta.newest_id;
-      userName = resp.includes.users[0].username;
-      if (resp.data) {
-        userTweets.push.apply(userTweets, resp.data);
-      }
-      if (resp.meta.next_token) {
-        nextToken = resp.meta.next_token;
-      } else {
-        hasNextPage = false;
-      }
+  let resp = await getPage(params, options, nextToken);
+  if (
+    resp &&
+    resp.meta &&
+    resp.meta.result_count &&
+    resp.meta.result_count > 0
+  ) {
+    lastId = resp.meta.newest_id;
+    userName = resp.includes.users[0].username;
+    if (resp.data) {
+      userTweets.push.apply(userTweets, resp.data);
+    }
+    if (resp.meta.next_token) {
+      nextToken = resp.meta.next_token;
     } else {
       hasNextPage = false;
     }
+  } else {
+    hasNextPage = false;
   }
   return lastId;
 };
@@ -84,6 +82,7 @@ const getPage = async (params, options, nextToken) => {
 
 cron.schedule("* * * * *", function () {
   getUserTweets().then((newId) => {
+    console.log(newId);
     database.checkIfTweetIdExist(newId).then((result) => {
       if (!result) {
         database.addTweetID(newId).then(() => {
