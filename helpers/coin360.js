@@ -61,7 +61,7 @@ exports.getImageAndMakeTweet = function () {
                     status:
                       "#Bitcoin Mapa das Criptomoedas representado por market cap com preços representados em USD (" +
                       date +
-                      "). \n \n $BTC $ETH $DOT $ADA",
+                      "). \n \n $BTC $ETH $BNB $DOT $ADA",
                     media_ids: [mediaIdStr],
                   };
 

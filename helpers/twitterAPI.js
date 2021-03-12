@@ -5,6 +5,7 @@ const Discord = require("discord.js");
 const client = new Discord.Client();
 var config = require("../config.json");
 var coin360 = require("./coin360");
+var database = require("./database");
 
 // this is the ID for @TwitterDev
 const userId = "1368593986106109957";
@@ -83,22 +84,10 @@ const getPage = async (params, options, nextToken) => {
 
 cron.schedule("* * * * *", function () {
   getUserTweets().then((newId) => {
-    var lastIdFromFile = "";
-    fs.readFile("lastID.txt", function (err, buf) {
-      lastIdFromFile = buf.toString();
-      if (!lastIdFromFile.includes(newId)) {
-        const channel = client.channels.cache.find(
-          (channel) => channel.id === "818257853168877578"
-        );
-        channel.send("https://twitter.com/gdInvestidores/status/" + newId);
-        lastIdFromFile = lastIdFromFile.replace("[", "").replace("]", "");
-        lastIdFromFile.split(",");
-        var newArrayIds = [];
-        newArrayIds.push(lastIdFromFile);
-        newArrayIds.push(newId);
-        fs.writeFile("lastID.txt", newArrayIds.toString(), (err) => {
-          if (err) console.log(err);
-          console.log("Successfully Written to File.");
+    database.checkIfTweetIdExist(newId).then((result) => {
+      if (!result) {
+        database.addTweetID(newId).then(() => {
+          channel.send("https://twitter.com/gdInvestidores/status/" + newId);
         });
       }
     });

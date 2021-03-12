@@ -2,6 +2,7 @@ var Request = require("request");
 const cheerio = require("cheerio");
 const got = require("got");
 const https = require("https");
+const fs = require("fs");
 
 //FUNCAO PARA VERIFICAR LOGIN NO EGOI
 exports.getTopMovers = function () {
@@ -205,6 +206,34 @@ exports.getTrendingTickers = function () {
           }
         });
       });
+    });
+  });
+  return promise;
+};
+
+//FUNCAO PARA VERIFICAR LOGIN NO EGOI
+exports.getArrayFromFile = function (file) {
+  var promise = new Promise(function (resolve, reject) {
+    fs.readFileSync(file, (err, data) => {
+      if (err) throw err;
+      resolve(JSON.parse(data).array);
+    });
+  }).then((data) => {
+    console.log(data);
+  });
+  return promise;
+};
+
+//FUNCAO PARA VERIFICAR LOGIN NO EGOI
+exports.writeIDtoFile = function (file, array, id) {
+  var promise = new Promise(function (resolve, reject) {
+    console.log(id);
+    array.push(id);
+    console.log(array);
+    let data = JSON.stringify({ array: array }, null);
+    fs.writeFile(file, data, (err) => {
+      if (err) throw err;
+      resolve();
     });
   });
   return promise;
