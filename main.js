@@ -1,7 +1,10 @@
 const Discord = require("discord.js");
-const client = new Discord.Client();
+const client = new Discord.Client({
+  partials: ["MESSAGE", "CHANNEL", "REACTION"],
+});
 var apiCalls = require("./helpers/apiCalls");
 var database = require("./helpers/database");
+var twitterAPI = require("./helpers/twitterAPI");
 var Request = require("request");
 const cron = require("node-cron");
 
@@ -89,6 +92,36 @@ client.on("message", (message) => {
   }
 });
 
+client.on("messageReactionAdd", (reaction, user) => {
+  if (reaction.message.channel.name === "news") {
+    var messagedReactedId = reaction.message.id;
+    database.checkIfReactionIdExist(messagedReactedId).then((exist) => {
+      if (!exist) {
+        reaction.message.channel.messages
+          .fetch(messagedReactedId)
+          .then((message) => {
+            title = message.embeds[0].title;
+            text = message.embeds[0].fields[0].value;
+            ticker = message.embeds[0].fields[1].name;
+            currentPrice = message.embeds[0].fields[2].name;
+            change = message.embeds[0].fields[2].value;
+            var tweetDescription =
+              text + "\n\n" + ticker + "\n" + currentPrice + "\n" + change;
+            var params = { status: tweetDescription };
+            twitterAPI
+              .postTweet(params)
+              .then(() => {
+                database.addNewReactionId(messagedReactedId).then(() => {});
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+          });
+      }
+    });
+  }
+});
+
 cron.schedule("* * * * *", function () {
   var promise = new Promise(function (resolve, reject) {
     var financeURL =
@@ -108,7 +141,11 @@ cron.schedule("* * * * *", function () {
             database.checkIfNewsIdExist(element).then((result) => {
               if (!result) {
                 database.addNewsID(element).then(() => {
-                  client.commands.get("news").execute(Discord, client, element);
+                  apiCalls.getCurrentPrice(element.symbol).then((result) => {
+                    client.commands
+                      .get("news")
+                      .execute(Discord, client, element, result);
+                  });
                 });
               }
             });

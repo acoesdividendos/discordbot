@@ -5,17 +5,18 @@ const request = require("request");
 const Discord = require("discord.js");
 var dateFormat = require("dateformat");
 var config = require("../config.json");
+var twitterAPI = require("./twitterAPI");
 const client = new Discord.Client();
 
 var T = new Twit({
-  consumer_key: config.CONSUMER_KEY,
+  /*consumer_key: config.CONSUMER_KEY,
   consumer_secret: config.CONSUMER_SECRET,
   access_token: config.ACCESS_TOKEN,
-  access_token_secret: config.ACCESS_TOKEN_SECRET,
-  /*consumer_key: config.DEMO_CONSUMER_KEY,
+  access_token_secret: config.ACCESS_TOKEN_SECRET,*/
+  consumer_key: config.DEMO_CONSUMER_KEY,
   consumer_secret: config.DEMO_CONSUMER_SECRET,
   access_token: config.DEMO_ACCESS_TOKEN,
-  access_token_secret: config.DEMO_ACCESS_TOKEN_SECRET*/
+  access_token_secret: config.DEMO_ACCESS_TOKEN_SECRET,
 });
 
 getCoin360Image = function () {
@@ -54,7 +55,6 @@ exports.getImageAndMakeTweet = function () {
               "media/metadata/create",
               meta_params,
               function (err, data, response) {
-                console.log(data);
                 if (!err) {
                   // now we can reference the media and post a tweet (media will attach to the tweet)
                   var params = {
@@ -64,46 +64,14 @@ exports.getImageAndMakeTweet = function () {
                       "). \n \n $BTC $ETH $BNB $DOT $ADA",
                     media_ids: [mediaIdStr],
                   };
-
-                  T.post(
-                    "statuses/update",
-                    params,
-                    function (err, data, response) {
-                      fs.unlink("./coin365.png", (err) => {
-                        if (err) {
-                          console.error(err);
-                          return;
-                        }
-                      });
-                      var newId = data.id_str;
-                      fs.readFile("lastID.txt", function (err, buf) {
-                        lastIdFromFile = buf.toString();
-                        if (!lastIdFromFile.includes(newId)) {
-                          const channel = client.channels.cache.find(
-                            (channel) => channel.id === "818257853168877578"
-                          );
-                          channel.send(
-                            "https://twitter.com/gdInvestidores/status/" + newId
-                          );
-                          lastIdFromFile = lastIdFromFile
-                            .replace("[", "")
-                            .replace("]", "");
-                          lastIdFromFile.split(",");
-                          var newArrayIds = [];
-                          newArrayIds.push(lastIdFromFile);
-                          newArrayIds.push(newId);
-                          fs.writeFile(
-                            "lastID.txt",
-                            newArrayIds.toString(),
-                            (err) => {
-                              if (err) console.log(err);
-                              console.log("Successfully Written to File.");
-                            }
-                          );
-                        }
-                      });
-                    }
-                  );
+                  twitterAPI.postTweet(params).then(() => {
+                    fs.unlink("./coin365.png", (err) => {
+                      if (err) {
+                        console.error(err);
+                        return;
+                      }
+                    });
+                  });
                 }
               }
             );

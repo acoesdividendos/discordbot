@@ -6,6 +6,18 @@ const client = new Discord.Client();
 var config = require("../config.json");
 var coin360 = require("./coin360");
 var database = require("./database");
+var Twit = require("twit");
+
+var T = new Twit({
+  /*consumer_key: config.CONSUMER_KEY,
+  consumer_secret: config.CONSUMER_SECRET,
+  access_token: config.ACCESS_TOKEN,
+  access_token_secret: config.ACCESS_TOKEN_SECRET,*/
+  consumer_key: config.DEMO_CONSUMER_KEY,
+  consumer_secret: config.DEMO_CONSUMER_SECRET,
+  access_token: config.DEMO_ACCESS_TOKEN,
+  access_token_secret: config.DEMO_ACCESS_TOKEN_SECRET,
+});
 
 // this is the ID for @TwitterDev
 const userId = "1368593986106109957";
@@ -100,31 +112,29 @@ cron.schedule("0 22 * * *", function () {
   coin360.getImageAndMakeTweet();
 });
 
+exports.postTweet = function (params) {
+  var promise = new Promise(function (resolve, reject) {
+    T.post("statuses/update", params, function (err, data, response) {
+      if (err) {
+        console.log(err);
+      }
+      var newId = data.id_str;
+      database
+        .addTweetID(newId)
+        .then(() => {
+          const channel = client.channels.cache.find(
+            (channel) => channel.id === "819870868293025792"
+          );
+          channel.send("https://twitter.com/gdInvestidores/status/" + newId);
+          resolve();
+        })
+        .catch((err) => {
+          console.log(err);
+          reject(err);
+        });
+    });
+  });
+  return promise;
+};
+
 client.login(config.DISCORD_API_KEY);
-
-/*fs.readFile("lastID.txt", function (err, buf) {
-  lastIdFromFile = buf.toString();
-  console.log();
-});*/
-
-/*fs.writeFile("lastID.txt", newId, (err) => {
-  if (err) console.log(err);
-  console.log("Successfully Written to File.");
-});
-
-var lastIdFromFile = "['1368885438191181826','1368885438191181826']";
-lastIdFromFile = lastIdFromFile.replace("[", "").replace("]", "");
-lastIdFromFile.split(",");
-var newId = "test";
-var newArrayIds = [];
-newArrayIds.push(lastIdFromFile);
-newArrayIds.push(newId);
-fs.writeFile("lastID.txt", newArrayIds.toString(), (err) => {
-  if (err) console.log(err);
-  console.log("Successfully Written to File.");
-});
-
-fs.readFile("lastID.txt", function (err, buf) {
-  lastIdFromFile = buf.toString();
-  console.log(lastIdFromFile.includes("test"));
-});*/

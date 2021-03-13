@@ -239,6 +239,37 @@ exports.writeIDtoFile = function (file, array, id) {
   return promise;
 };
 
+exports.getCurrentPrice = function (ticker) {
+  var promise = new Promise(function (resolve, reject) {
+    var stockInfoURL =
+      "https://quote.cnbc.com/quote-html-webservice/restQuote/symbolType/symbol?symbols=" +
+      ticker +
+      "&requestMethod=itv&noform=1&partnerId=2&fund=1&exthrs=1&output=json&events=1";
+
+    Request.get(stockInfoURL, function (err, response) {
+      if (err) {
+        console.log(err);
+      }
+      var marketStatus = JSON.parse(response.body).FormattedQuoteResult
+        .FormattedQuote[0].curmktstatus;
+      var currentPrice = 0;
+      var percentChange = 0;
+      if (marketStatus == "POST_MKT") {
+        currentPrice = JSON.parse(response.body).FormattedQuoteResult
+          .FormattedQuote[0].ExtendedMktQuote.last;
+        percentChange = JSON.parse(response.body).FormattedQuoteResult
+          .FormattedQuote[0].ExtendedMktQuote.change_pct;
+      }
+      resolve({
+        currentValue: "$".concat(currentPrice),
+        percentChange: percentChange,
+        marketStatus: marketStatus
+      });
+    });
+  });
+  return promise;
+};
+
 //FUNCAO PARA VERIFICAR LOGIN NO EGOI
 getMostActivesTickers = function () {
   var promise = new Promise(function (resolve, reject) {

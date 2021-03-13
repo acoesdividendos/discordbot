@@ -2,6 +2,7 @@ var mongoose = require("mongoose");
 var config = require("../config.json");
 var NewAPI = require("../models/news"); // get the mongoose model
 var Tweet = require("../models/tweets"); // get the mongoose model
+var Reaction = require("../models/reactions");
 
 mongoose.connect(config.database, {
   useNewUrlParser: true,
@@ -59,6 +60,36 @@ exports.checkIfTweetIdExist = function (newId) {
     Tweet.findOne({ id_tweet: newId }, function (err, tweet) {
       if (err) throw err;
       if (!tweet) {
+        resolve(false);
+      } else {
+        resolve(true);
+      }
+    });
+  });
+  return promise;
+};
+
+exports.addNewReactionId = function (newId) {
+  var promise = new Promise(function (resolve, reject) {
+    var newReaction = new Reaction({
+      id_reaction: newId,
+    });
+    newReaction.save(function (err, wishlist) {
+      if (err) {
+        resolve();
+      } else {
+        resolve();
+      }
+    });
+  });
+  return promise;
+};
+
+exports.checkIfReactionIdExist = function (newId) {
+  var promise = new Promise(function (resolve, reject) {
+    Reaction.findOne({ id_reaction: newId }, function (err, reaction) {
+      if (err) throw err;
+      if (!reaction) {
         resolve(false);
       } else {
         resolve(true);
