@@ -4,7 +4,6 @@ const fs = require("fs");
 const Discord = require("discord.js");
 const client = new Discord.Client();
 var config = require("../config.json");
-var coin360 = require("./coin360");
 var database = require("./database");
 var Twit = require("twit");
 
@@ -29,7 +28,7 @@ const url = `https://api.twitter.com/2/users/${userId}/tweets`;
 const bearerToken = config.TWITTER_API_KEY;
 //const bearerToken = process.env.BEARER_TOKEN;
 
-const getUserTweets = async () => {
+exports.getUserTweets = async () => {
   let userTweets = [];
 
   // we request the author_id expansion so that we can print out the user name later
@@ -91,26 +90,6 @@ const getPage = async (params, options, nextToken) => {
     throw new Error(`Request failed: ${err}`);
   }
 };
-
-cron.schedule("* * * * *", function () {
-  getUserTweets().then((newId) => {
-    console.log(newId);
-    database.checkIfTweetIdExist(newId).then((result) => {
-      if (!result) {
-        database.addTweetID(newId).then(() => {
-          const channel = client.channels.cache.find(
-            (channel) => channel.id === "818257853168877578"
-          );
-          channel.send("https://twitter.com/gdInvestidores/status/" + newId);
-        });
-      }
-    });
-  });
-});
-
-cron.schedule("0 22 * * *", function () {
-  coin360.getImageAndMakeTweet();
-});
 
 exports.postTweet = function (params) {
   var promise = new Promise(function (resolve, reject) {

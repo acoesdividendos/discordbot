@@ -5,6 +5,7 @@ const client = new Discord.Client({
 var apiCalls = require("./helpers/apiCalls");
 var database = require("./helpers/database");
 var twitterAPI = require("./helpers/twitterAPI");
+var coin360 = require("./helpers/coin360");
 var Request = require("request");
 const cron = require("node-cron");
 
@@ -164,6 +165,26 @@ cron.schedule("* * * * *", function () {
     });
   });
   return promise;
+});
+
+
+cron.schedule("* * * * *", function () {
+  twitterAPI.getUserTweets().then((newId) => {
+    database.checkIfTweetIdExist(newId).then((result) => {
+      if (!result) {
+        database.addTweetID(newId).then(() => {
+          const channel = client.channels.cache.find(
+            (channel) => channel.id === "818257853168877578"
+          );
+          channel.send("https://twitter.com/gdInvestidores/status/" + newId);
+        });
+      }
+    });
+  });
+});
+
+cron.schedule("0 22 * * *", function () {
+  coin360.getImageAndMakeTweet();
 });
 
 client.login(config.DISCORD_API_KEY);
