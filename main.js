@@ -107,6 +107,10 @@ client.on("messageReactionAdd", (reaction, user) => {
             change = message.embeds[0].fields[2].value;
             var tweetDescription =
               text + "\n\n" + ticker + "\n" + currentPrice + "\n" + change;
+            if (tweetDescription.length > 250) {
+              tweetDescription =
+                title + "\n\n" + ticker + "\n" + currentPrice + "\n" + change;
+            }
             var params = { status: tweetDescription };
             twitterAPI
               .postTweet(params)
