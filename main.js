@@ -129,7 +129,7 @@ client.on("messageReactionAdd", (reaction, user) => {
 cron.schedule("* * * * *", function () {
   var promise = new Promise(function (resolve, reject) {
     var financeURL =
-      "https://financialmodelingprep.com/api/v3/stock_news?tickers=SPY,DJI,QQQ,GME,AAPL,FB,GOOG,AMZN,FB,SFT,PG,PEP,KO,DIS,GAN,TSLA,TTCF,BABA,TCEHY,V,SQ,DBX,PLTR,PLBY,ZM,LMND,MMM,MA,JNJ,PFE,PYPL,NFLX,NIO,INTC,AMD,NVDA,MSFT,JD,MRNA&apikey=7fe81ed8f6a0ea84b9c6a45ca3018c58&limit=10";
+      "https://financialmodelingprep.com/api/v3/stock_news?tickers=SPY,DJI,QQQ,GME,AAPL,FB,GOOG,AMZN,FB,SFT,PG,PEP,KO,DIS,GAN,TSLA,TTCF,BABA,TCEHY,V,SQ,DBX,PLTR,PLBY,ZM,LMND,MMM,MA,JNJ,PFE,PYPL,NFLX,NIO,INTC,AMD,NVDA,MSFT,JD,MRNA,BYND,CRM,TSM,T,MCD,MSTR,SHOP,SPOT,SNAP,OPEN,UBER,ABNB,RBLX,SPCE&apikey=7fe81ed8f6a0ea84b9c6a45ca3018c58&limit=10";
 
     Request.get(financeURL, function (err, response) {
       if (err) {
