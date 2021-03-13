@@ -25,7 +25,7 @@ const url = `https://api.twitter.com/2/users/${userId}/tweets`;
 // The code below sets the bearer token from your environment variables
 // To set environment variables on macOS or Linux, run the export command below from the terminal:
 // export BEARER_TOKEN='YOUR-TOKEN'
-const bearerToken = config.TWITTER_API_KEY;
+const bearerToken = config.DEMO_TWITTER_API_KEY;
 //const bearerToken = process.env.BEARER_TOKEN;
 
 exports.getUserTweets = async () => {
