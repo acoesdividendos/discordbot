@@ -9,14 +9,14 @@ var database = require("./database");
 var Twit = require("twit");
 
 var T = new Twit({
-  /*consumer_key: config.CONSUMER_KEY,
+  consumer_key: config.CONSUMER_KEY,
   consumer_secret: config.CONSUMER_SECRET,
   access_token: config.ACCESS_TOKEN,
-  access_token_secret: config.ACCESS_TOKEN_SECRET,*/
-  consumer_key: config.DEMO_CONSUMER_KEY,
+  access_token_secret: config.ACCESS_TOKEN_SECRET,
+  /*consumer_key: config.DEMO_CONSUMER_KEY,
   consumer_secret: config.DEMO_CONSUMER_SECRET,
   access_token: config.DEMO_ACCESS_TOKEN,
-  access_token_secret: config.DEMO_ACCESS_TOKEN_SECRET,
+  access_token_secret: config.DEMO_ACCESS_TOKEN_SECRET,*/
 });
 
 // this is the ID for @TwitterDev
@@ -123,7 +123,7 @@ exports.postTweet = function (params) {
         .addTweetID(newId)
         .then(() => {
           const channel = client.channels.cache.find(
-            (channel) => channel.id === "819870868293025792"
+            (channel) => channel.id === "818257853168877578"
           );
           channel.send("https://twitter.com/gdInvestidores/status/" + newId);
           resolve();
