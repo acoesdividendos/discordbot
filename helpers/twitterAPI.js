@@ -8,7 +8,7 @@ var T = new Twit({
   consumer_key: config.CONSUMER_KEY,
   consumer_secret: config.CONSUMER_SECRET,
   access_token: config.ACCESS_TOKEN,
-  access_token_secret: config.ACCESS_TOKEN_SECRET
+  access_token_secret: config.ACCESS_TOKEN_SECRET,
 });
 
 var Tdemo = new Twit({
@@ -24,23 +24,25 @@ const userId = "1368593986106109957";
 
 exports.postTweet = function (params) {
   var promise = new Promise(function (resolve, reject) {
-    const vgmUrl = "https://finance.yahoo.com/most-active";
-    var varZero = 0;
-    var arrayReturn = [];
-    got(vgmUrl)
-      .then((response) => {
-        const $ = cheerio.load(response.body);
-        $("table > tbody > tr > td").each((i, link) => {
-          if (varZero == i) {
-            arrayReturn.push($(link).text());
-            varZero = varZero + 10;
-          }
-        });
-        resolve(arrayReturn);
-      })
-      .catch((err) => {
+    T.post("statuses/update", params, function (err, data, response) {
+      if (err) {
         console.log(err);
-      });
+      }
+      var newId = data.id_str;
+      database
+        .addTweetID(newId)
+        .then(() => {
+          const channel = client.channels.cache.find(
+            (channel) => channel.id === "818257853168877578"
+          );
+          channel.send("https://twitter.com/gdInvestidores/status/" + newId);
+          resolve();
+        })
+        .catch((err) => {
+          console.log(err);
+          reject(err);
+        });
+    });
   });
   return promise;
 };
@@ -53,7 +55,9 @@ stream.on("tweet", function (tweet) {
         const channel = client.channels.cache.find(
           (channel) => channel.id === "818257853168877578"
         );
-        channel.send("https://twitter.com/gdInvestidores/status/" + tweet.id_str);
+        channel.send(
+          "https://twitter.com/gdInvestidores/status/" + tweet.id_str
+        );
       });
     }
   });
