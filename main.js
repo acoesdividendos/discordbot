@@ -92,7 +92,7 @@ client.on("message", (message) => {
         message.channel.id === "721461237845852220"
       ) {
         const channel = client.channels.cache.find(
-          (channel) => channel.id === "721461265352097792"
+          (channel) => channel.id === "818257853168877578"
         );
         channel.send(args[0]);
       }
