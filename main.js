@@ -84,6 +84,19 @@ client.on("message", (message) => {
         });
       }
       break;
+    case "ttw":
+      if (
+        message.member.roles.cache.some(
+          (role) => role.name === "Administrador"
+        ) &&
+        message.channel.id === "721461237845852220"
+      ) {
+        const channel = client.channels.cache.find(
+          (channel) => channel.id === "721461265352097792"
+        );
+        channel.send(args[0]);
+      }
+      break;
     case "toplosers":
       apiCalls.getLosersMovers().then((array) => {
         client.commands
@@ -165,22 +178,6 @@ cron.schedule("* * * * *", function () {
     });
   });
   return promise;
-});
-
-
-cron.schedule("* * * * *", function () {
-  twitterAPI.getUserTweets().then((newId) => {
-    database.checkIfTweetIdExist(newId).then((result) => {
-      if (!result) {
-        database.addTweetID(newId).then(() => {
-          const channel = client.channels.cache.find(
-            (channel) => channel.id === "818257853168877578"
-          );
-          channel.send("https://twitter.com/gdInvestidores/status/" + newId);
-        });
-      }
-    });
-  });
 });
 
 cron.schedule("0 22 * * *", function () {
