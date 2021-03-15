@@ -266,6 +266,12 @@ exports.getCurrentPrice = function (ticker) {
         percentChange = JSON.parse(response.body).FormattedQuoteResult
           .FormattedQuote[0].ExtendedMktQuote.change_pct;
       }
+      if(marketStatus == "REG_MKT"){
+        currentPrice = JSON.parse(response.body).FormattedQuoteResult
+          .FormattedQuote[0].last;
+        percentChange = JSON.parse(response.body).FormattedQuoteResult
+          .FormattedQuote[0].change_pct;
+      }
       resolve({
         currentValue: "$".concat(currentPrice),
         percentChange: percentChange,
