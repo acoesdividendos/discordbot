@@ -13,6 +13,7 @@ const prefix = "!";
 
 const fs = require("fs");
 var config = require("./config.json");
+const { randomInt } = require("crypto");
 
 client.commands = new Discord.Collection();
 
@@ -35,6 +36,17 @@ client.on("message", (message) => {
         message.delete({ timeout: 1 });
       }
     });
+  }
+  if (
+    message.member.roles.cache.some(
+      (role) => role.name === "Grupo de Investidores BOT"
+    ) &&
+    message.channel.id === "818257853168877578"
+  ) {
+    var emojis = ["🚀", "😄", "👌", "👀", "✅", "📈", "👍"];
+    message.react(emojis[Math.floor(Math.random()*emojis.length)]);
+    message.react(emojis[Math.floor(Math.random()*emojis.length)]);
+    message.react(emojis[Math.floor(Math.random()*emojis.length)]);
   }
   if (!message.content.startsWith(prefix) || message.author.bot) return;
 
@@ -130,7 +142,7 @@ client.on("messageReactionAdd", (reaction, user) => {
               tweetDescription =
                 title + "\n\n" + ticker + "\n" + currentPrice + "\n" + change;
             }
-            tweetDescription = tweetDescription + "\n" + link
+            tweetDescription = tweetDescription + "\n" + link;
             var params = { status: tweetDescription };
             twitterAPI
               .postTweet(params)

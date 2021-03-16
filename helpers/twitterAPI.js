@@ -35,7 +35,8 @@ exports.postTweet = function (params) {
           const channel = client.channels.cache.find(
             (channel) => channel.id === "818257853168877578" //819870868293025792 - canal news || 818257853168877578 - canal market-update
           );
-          channel.send("https://twitter.com/gdInvestidores/status/" + newId);
+          channel
+            .send("https://twitter.com/gdInvestidores/status/" + newId)
           resolve();
         })
         .catch((err) => {
