@@ -115,16 +115,22 @@ client.on("messageReactionAdd", (reaction, user) => {
           .fetch(messagedReactedId)
           .then((message) => {
             title = message.embeds[0].title;
+            link = message.embeds[0].fields[0].name;
             text = message.embeds[0].fields[0].value;
             ticker = message.embeds[0].fields[1].name;
             currentPrice = message.embeds[0].fields[2].name;
             change = message.embeds[0].fields[2].value;
             var tweetDescription =
               text + "\n\n" + ticker + "\n" + currentPrice + "\n" + change;
+            if (reaction.emoji.name === "👍") {
+              tweetDescription =
+                title + "\n\n" + ticker + "\n" + currentPrice + "\n" + change;
+            }
             if (tweetDescription.length > 250) {
               tweetDescription =
                 title + "\n\n" + ticker + "\n" + currentPrice + "\n" + change;
             }
+            tweetDescription = tweetDescription + "\n" + link
             var params = { status: tweetDescription };
             twitterAPI
               .postTweet(params)
