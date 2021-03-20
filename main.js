@@ -37,6 +37,9 @@ client.on("message", (message) => {
       }
     });
   }
+  if (message.member.roles.cache.some((role) => role.name === "Troll")) {
+    message.delete({ timeout: 1 });
+  }
   if (
     message.member.roles.cache.some(
       (role) => role.name === "Grupo de Investidores BOT"
@@ -44,9 +47,9 @@ client.on("message", (message) => {
     message.channel.id === "818257853168877578"
   ) {
     var emojis = ["🚀", "😄", "👌", "👀", "✅", "📈", "👍"];
-    message.react(emojis[Math.floor(Math.random()*emojis.length)]);
-    message.react(emojis[Math.floor(Math.random()*emojis.length)]);
-    message.react(emojis[Math.floor(Math.random()*emojis.length)]);
+    message.react(emojis[Math.floor(Math.random() * emojis.length)]);
+    message.react(emojis[Math.floor(Math.random() * emojis.length)]);
+    message.react(emojis[Math.floor(Math.random() * emojis.length)]);
   }
   if (!message.content.startsWith(prefix) || message.author.bot) return;
 
