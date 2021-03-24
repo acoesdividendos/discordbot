@@ -201,8 +201,12 @@ cron.schedule("* * * * *", function () {
   return promise;
 });
 
-cron.schedule("0 22 * * *", function () {
-  coin360.getImageAndMakeTweet();
+cron.schedule("** * * * *", function () {
+  var today = new Date();
+  var time = today.getHours() + ":" + today.getMinutes();
+  if (time == "22:00") {
+    coin360.getImageAndMakeTweet();
+  }
 });
 
 client.login(config.DISCORD_API_KEY);
