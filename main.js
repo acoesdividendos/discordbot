@@ -201,7 +201,7 @@ cron.schedule("* * * * *", function () {
   return promise;
 });
 
-cron.schedule("** * * * *", function () {
+cron.schedule("* * * * *", function () {
   var today = new Date();
   var time = today.getHours() + ":" + today.getMinutes();
   if (time == "22:00") {
