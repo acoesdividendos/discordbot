@@ -204,7 +204,7 @@ cron.schedule("* * * * *", function () {
 cron.schedule("* * * * *", function () {
   var today = new Date();
   var time = today.getHours() + ":" + today.getMinutes();
-  if (time == "22:00") {
+  if (time == "22:1") {
     coin360.getImageAndMakeTweet();
   } else {
     console.log(time);
