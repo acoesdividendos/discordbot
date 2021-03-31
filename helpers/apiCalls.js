@@ -160,6 +160,40 @@ exports.getMostActives = function () {
   return promise;
 };
 
+//FUNCAO PARA OBTER ULTIMOS REGISTOS
+exports.getLastUsersAdded = function () {
+  var promise = new Promise(function (resolve, reject) {
+    var dbURL = "http://178.62.83.231:8083/cliente/lastUsers";
+
+    Request.get(dbURL, function (err, response) {
+      if (err) {
+        console.log(err);
+        reject(["Erro ao obter users"]);
+      } else {
+        resolve(JSON.parse(response.body).clientes);
+      }
+    });
+  });
+  return promise;
+};
+
+//FUNCAO PARA OBTER ULTIMOS REGISTOS
+exports.addUserToDatabase = function (email) {
+  var promise = new Promise(function (resolve, reject) {
+    var dbURL = "http://178.62.83.231:8083/cliente/registo";
+    var data = { Email: email };
+    Request.post({ url: dbURL, form: data }, function (err, response) {
+      if (err) {
+        console.log(err);
+        reject("Erro ao registar user");
+      } else {
+        resolve(JSON.parse(response.body).mensagem);
+      }
+    });
+  });
+  return promise;
+};
+
 exports.getTrendingTickers = function () {
   var promise = new Promise(function (resolve, reject) {
     var returnArray = [];
@@ -260,13 +294,13 @@ exports.getCurrentPrice = function (ticker) {
         percentChange = JSON.parse(response.body).FormattedQuoteResult
           .FormattedQuote[0].ExtendedMktQuote.change_pct;
       }
-      if(marketStatus == "PRE_MKT"){
+      if (marketStatus == "PRE_MKT") {
         currentPrice = JSON.parse(response.body).FormattedQuoteResult
           .FormattedQuote[0].ExtendedMktQuote.last;
         percentChange = JSON.parse(response.body).FormattedQuoteResult
           .FormattedQuote[0].ExtendedMktQuote.change_pct;
       }
-      if(marketStatus == "REG_MKT"){
+      if (marketStatus == "REG_MKT") {
         currentPrice = JSON.parse(response.body).FormattedQuoteResult
           .FormattedQuote[0].last;
         percentChange = JSON.parse(response.body).FormattedQuoteResult
@@ -275,7 +309,7 @@ exports.getCurrentPrice = function (ticker) {
       resolve({
         currentValue: "$".concat(currentPrice),
         percentChange: percentChange,
-        marketStatus: marketStatus
+        marketStatus: marketStatus,
       });
     });
   });

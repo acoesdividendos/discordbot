@@ -112,6 +112,31 @@ client.on("message", (message) => {
         channel.send(args[0]);
       }
       break;
+    case "lastusers":
+      if (
+        message.member.roles.cache.some(
+          (role) => role.name === "Administrador"
+        ) &&
+        message.channel.id === "721461237845852220"
+      ) {
+        apiCalls.getLastUsersAdded().then((array) => {
+          client.commands
+            .get("ultimosRegistos")
+            .execute(message, args, Discord, client, array);
+        });
+      }
+    case "registar":
+      if (
+        message.member.roles.cache.some(
+          (role) => role.name === "Administrador"
+        ) &&
+        message.channel.id === "721461237845852220"
+      ) {
+        apiCalls.addUserToDatabase(args[0]).then((array) => {
+          message.channel.send(array);
+        });
+      }
+      break;
     case "toplosers":
       apiCalls.getLosersMovers().then((array) => {
         client.commands
