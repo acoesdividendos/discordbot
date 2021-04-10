@@ -70,7 +70,7 @@ Then if we react to the message on discord with the news, the news will get post
 
 ## Built With
 
-- [MongoDB](https://www.postgresql.org) - The database used
+- [MongoDB](https://www.mongodb.com) - The database used
 - [Npm](https://www.npmjs.com) - Used to install the packages used in the application
 - [Twitter API](https://developer.twitter.com/en) - Used to post to Twitter
 - [FMP API](https://financialmodelingprep.com) - Used to get the news
