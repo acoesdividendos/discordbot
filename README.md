@@ -11,7 +11,7 @@ With this instructions you will be able to run the application and get a discord
 First you will just need to clone the repository.
 
 ```
-git clone https://github.com/afonsoocosta53/uphold-bot.git
+git clone https://github.com/acoesdividendos/discordbot
 ```
 
 And then go into the folder of the repository.
