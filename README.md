@@ -6,7 +6,7 @@ A discord bot that execute based on commands of messages on discord and that fet
 
 With this instructions you will be able to run the application and get a discord bot to execute the commands.
 
-### Installing
+## Installing
 
 First you will just need to clone the repository.
 
