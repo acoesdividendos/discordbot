@@ -194,6 +194,25 @@ exports.addUserToDatabase = function (email) {
   return promise;
 };
 
+
+
+//FUNCAO PARA OBTER ULTIMOS REGISTOS
+exports.deleteUserFromDatabase = function (email) {
+  var promise = new Promise(function (resolve, reject) {
+    var dbURL = "http://178.62.83.231:8083/cliente/deleteUser";
+    var data = { Email: email };
+    Request.post({ url: dbURL, form: data }, function (err, response) {
+      if (err) {
+        console.log(err);
+        reject("Erro ao apagar cliente");
+      } else {
+        resolve(JSON.parse(response.body).mensagem);
+      }
+    });
+  });
+  return promise;
+};
+
 exports.getTrendingTickers = function () {
   var promise = new Promise(function (resolve, reject) {
     var returnArray = [];

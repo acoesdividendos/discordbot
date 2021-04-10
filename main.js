@@ -99,6 +99,13 @@ client.on("message", (message) => {
         });
       }
       break;
+    case "apagar":
+      if (message.member.roles.cache.some((role) => role.name === "Administrador") && message.channel.id === "721461237845852220") {
+        apiCalls.deleteUserFromDatabase(args[0]).then((array) => {
+          message.channel.send(array);
+        });
+      }
+      break;
     case "toplosers":
       apiCalls.getLosersMovers().then((array) => {
         client.commands.get("topLosers").execute(message, args, Discord, client, array);
