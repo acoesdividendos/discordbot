@@ -77,4 +77,4 @@ Then if we react to the message on discord with the news, the news will get post
 
 ## Authors
 
-- **Afonso Costa** - _Initial development_ - [acoesdividendos](https://github.com/acoesdividendos/discord_bot)
+- **Afonso Costa** - _Initial development_ - [acoesdividendos](https://github.com/acoesdividendos/discordbot)
